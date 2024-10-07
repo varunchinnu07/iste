@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for Hackathon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: rgba(255, 255, 255, 0.1);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: 0;
+        }
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            margin-top: 50px;
+            background-color: rgba(255, 255, 255, 0.1); /* Translucent white background */
+            box-shadow:none;
+            border-radius: 20px;
+            flex-grow: 1;
+            z-index: 1;
+            position: relative;
+        }
+        h1 {
+            color: #005082;
+            margin-bottom: 30px;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0);
+            border: none;
+            border-radius: 15px;
+        }
+        .card-header {
+            background-color: rgba(255, 255, 255, 0);
+            color: #fff;
+            border-radius: 15px 15px 0 0;
+            padding: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #0072ff;
+        }
+        .btn-primary {
+            background-color: #005082;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #003d73;
+        }
+        .participant-section {
+            background-color: #cfe4f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #e3e6e8;
+        }
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .footer {
+            background-color: #005082;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-top: auto;
+        }
+        .footer a {
+            color: #00c6ff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .ppt-upload-section {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video class="video-background" autoplay muted loop>
+        <source src="{% static 'background.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Dark Overlay -->
+    <div class="video-overlay"></div>
+
+    <div class="container">
+        <h1 style="color: red;">Register Your Team</h1>
+
+        <!-- Team Details Section -->
+        <div class="card">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Team Details -->
+                <div class="card-header">
+                    <h2 style="color: blue;">Team Details</h2>
+                </div>
+                
+                <div class="card-body">
+                    <div class="participant-section">
+                    {{ team_form.as_p }}
+                    </div>
+                </div>
+
+                <!-- Participants Section -->
+                <div class="card-header">
+                    <h2 style="color: blue;">Participants</h2>
+                </div>
+                <div class="card-body">
+                    {{ formset.management_form }}
+                    {% for form in formset %}
+                        <div class="participant-section">
+                            {% if forloop.counter == 1 %}
+                                <h3 class="text-primary">Team Leader</h3>
+                            {% else %}
+                                <h3 class="text-secondary">Participant {{ forloop.counter }}</h3>
+                            {% endif %}
+                            <div class="form-group">
+                                {{ form.as_p }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center mb-4">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Government Engineering College Hassan. All rights reserved.</p>
+        <p>Contact us at: <a href="mailto:mithunlmmanjula@gmail.com">TechTrivia24@gmail.com</a></p>
+        <p>Phone: +91 70269 60582</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var domainField = document.getElementById('id_domain');
+            var pptField = document.getElementById('id_idea_ppt').parentElement;
+    
+            function togglePptField() {
+                if (domainField.value === 'design') {
+                    pptField.style.display = 'none';
+                } else {
+                    pptField.style.display = '';
+                }
+            }
+    
+            // Initial toggle on page load
+            togglePptField();
+    
+            // Add event listener for change in domain selection
+            domainField.addEventListener('change', togglePptField);
+        });
+    </script>
+    
+</body>
+</html>

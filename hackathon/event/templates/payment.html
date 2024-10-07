@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: 0;
+        }
+        .container {
+            margin-top: 50px;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        .card {
+            border: none;
+            box-shadow: none;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .card-header {
+            background-color: rgba(0, 114, 255, 0.3);
+            color: #fff;
+            border-radius: 15px 15px 0 0;
+            padding: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #0072ff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+        }
+        .footer a {
+            color: #00c6ff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .payment-image {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+        .razorpay-btn {
+            background-color: #f16e4a;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .razorpay-btn:hover {
+            background-color: #d45933;
+        }
+    </style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <video class="video-background" autoplay muted loop>
+        <source src="{% static 'background2.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div class="container">
+        <!-- Payment Image -->
+        <h3>Registration Fees to be paid is 500Rs</h3>
+        <h5>Scan the below QR code to make the Payment</h5>
+        <img src="{% static 'Scanner3.jpg' %}" alt="QR Code" class="payment-image img-fluid">
+
+        <!-- Payment Form -->
+        <h1>Submit Payment for {{ team.team_name }}</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-header">
+                    <h1>Pay Registration Fee</h1>
+                </div>
+                <div class="card-body">
+                    {{ Payment_form.as_p }}
+                </div>   
+                <div class="text-center mb-3">
+                    <button type="submit" class="btn-primary">Complete Registration</button>
+                    <p>once registration is completed you will receive a confirmation mail</p>
+                </div>
+            </div>
+        </form>   
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Government Engineering College Hassan. All rights reserved.</p>
+            <p>Contact us at: <a href="mailto:mithunlmmanjula@gmail.com">TechTrivia24@gmail.com</a></p>
+            <p>Phone: +91 70269 60582</p>
+    </div>
+</body>
+</html>
